@@ -1,0 +1,7 @@
+replicaCount:
+  openproject: 2
+
+domain: "openproject.yourcompany.com"
+
+storage:
+  className: "ocs-storagecluster-cephfs"

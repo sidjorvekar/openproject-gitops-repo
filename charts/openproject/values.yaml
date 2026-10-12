@@ -1,0 +1,24 @@
+global:
+  environment: production
+
+replicaCount:
+  openproject: 1
+
+image:
+  openproject:
+    repository: openproject/openproject
+    tag: "14.0.0"
+    pullPolicy: IfNotPresent
+  postgres:
+    repository: postgres
+    tag: "15-alpine"
+  memcached:
+    repository: memcached
+    tag: "1.6-alpine"
+
+storage:
+  className: "gp2"
+  postgresSize: 20Gi
+  openprojectDataSize: 30Gi
+
+domain: "openproject.yourcompany.com"

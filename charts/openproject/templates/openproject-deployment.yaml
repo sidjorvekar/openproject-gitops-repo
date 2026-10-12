@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openproject
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount.openproject }}
+  selector:
+    matchLabels:
+      app: openproject
+  template:
+    metadata:
+      labels:
+        app: openproject
+    spec:
+      containers:
+        - name: openproject
+          image: "{{ .Values.image.openproject.repository }}:{{ .Values.image.openproject.tag }}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              value: "postgres://openproject:$(POSTGRES_PASSWORD)@openproject-postgresql:5432/openproject_production"
+            - name: CACHED_CATCHUP
+              value: "memcached://openproject-memcached:11211"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: openproject-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: OPENPROJECT_SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: openproject-db-secret
+                  key: OPENPROJECT_SECRET_KEY_BASE
+          volumeMounts:
+            - name: openproject-storage
+              mountPath: /var/db/openproject
+      volumes:
+        - name: openproject-storage
+          persistentVolumeClaim:
+            claimName: openproject-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openproject-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: openproject

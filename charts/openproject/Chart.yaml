@@ -1,0 +1,6 @@
+apiVersion: v2
+name: openproject
+description: Helm chart for deploying OpenProject, PostgreSQL, and Memcached on OpenShift
+type: application
+version: 1.0.0
+appVersion: "14.0.0"
