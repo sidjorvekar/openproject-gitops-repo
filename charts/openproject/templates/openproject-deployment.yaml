@@ -33,6 +33,27 @@ spec:
                 secretKeyRef:
                   name: openproject-db-secret
                   key: OPENPROJECT_SECRET_KEY_BASE
+            # --- LDAP / Active Directory Integration Environment Variables ---
+            - name: OPENPROJECT_LDAP_ENABLED
+              value: "{{ .Values.ldap.enabled }}"
+            - name: OPENPROJECT_LDAP_HOST
+              value: "{{ .Values.ldap.host }}"
+            - name: OPENPROJECT_LDAP_PORT
+              value: "{{ .Values.ldap.port }}"
+            - name: OPENPROJECT_LDAP_SSL
+              value: "{{ .Values.ldap.ssl }}"
+            - name: OPENPROJECT_LDAP_BASE_DN
+              value: "{{ .Values.ldap.baseDn }}"
+            - name: OPENPROJECT_LDAP_BIND_DN
+              valueFrom:
+                secretKeyRef:
+                  name: openproject-db-secret
+                  key: LDAP_BIND_DN
+            - name: OPENPROJECT_LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: openproject-db-secret
+                  key: LDAP_PASSWORD
           volumeMounts:
             - name: openproject-storage
               mountPath: /var/db/openproject

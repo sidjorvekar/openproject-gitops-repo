@@ -20,5 +20,13 @@ storage:
   className: "gp2"
   postgresSize: 20Gi
   openprojectDataSize: 30Gi
+  
+# Existing values remain here...
+ldap:
+  enabled: "true"
+  host: "dc.corp.example.com"
+  port: "636"
+  ssl: "true"
+  baseDn: "ou=users,dc=corp,dc=example,dc=com"
 
 domain: "openproject.yourcompany.com"
